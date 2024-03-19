@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class HeatMapScript : MonoBehaviour
+public class HomeScript : MonoBehaviour
 {
-
     [SerializeField] private InputAction position, press;
     [SerializeField] private float swipeResistance = 100;
     private Vector2 initialPos;
@@ -17,30 +15,9 @@ public class HeatMapScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        print("heat map start");
+        print("home screen start");
         position.Enable();
         press.Enable();
-        var hits = GameObject.FindGameObjectsWithTag("Hits");
-        var misses = GameObject.FindGameObjectsWithTag("Misses");
-        List<Vector3> hitPositions = new List<Vector3>();
-        List<Vector3> missPositions = new List<Vector3>();
-        foreach (var hit in hits)
-        {
-            Vector3 position;
-            Quaternion rotation;
-            hit.transform.GetPositionAndRotation(out position, out rotation);
-            hitPositions.Add(position);
-            hit.SetActive(false);
-        }
-        foreach (var miss in misses)
-        {
-            Vector3 position;
-            Quaternion rotation;
-            miss.transform.GetPositionAndRotation(out position, out rotation);
-            missPositions.Add(position);
-            miss.SetActive(false);
-        }
-        create_heat_map(hitPositions, missPositions);
     }
 
     // Update is called once per frame
@@ -73,19 +50,13 @@ public class HeatMapScript : MonoBehaviour
             return;
         }
     }
-
     private void switch_scene(Vector2 direction)
     {
-        if (direction.y < 0)
+        if (direction.y > 0)
         {
-            print("pull down to swiping screen");
+            print("pull up to swiping screen");
             SceneManager.LoadScene("SwipeScreenScene");
             return;
         }
-    }
-
-    private void create_heat_map(List<Vector3> hits, List<Vector3> misses)
-    {
-
     }
 }
