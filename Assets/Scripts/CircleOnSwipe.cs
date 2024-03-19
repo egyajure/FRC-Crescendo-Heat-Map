@@ -22,11 +22,14 @@ public class CircleOnSwipe : MonoBehaviour
     public GameObject clone, otherclone;
     private bool isRunning = true;
 
+    public Grid grid;
+
     void Start()
     {
         print("start");
         position.Enable();
         press.Enable();
+        grid = new Grid(54, 28, 0.5f, new Vector2(-14, -7));
     }
 
     void Update()
@@ -52,6 +55,7 @@ public class CircleOnSwipe : MonoBehaviour
         if (Mathf.Abs(delta.x) > swipeResistance)
         {
             //we have swiped if we got here
+            grid.SetValue(Camera.main.ScreenToWorldPoint(initialPos), 56);
             direction.x = Mathf.Clamp(delta.x, -1, 1);
             make_sprite(direction, initialPos);
             print("swipe x axis");
