@@ -17,7 +17,6 @@ public class HeatMapScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        print("heat map start");
         position.Enable();
         press.Enable();
         var hits = GameObject.FindGameObjectsWithTag("Hits");
@@ -59,7 +58,6 @@ public class HeatMapScript : MonoBehaviour
 
     private void DetectSwipe()
     {
-        print("detect swipe");
         Vector2 delta = currentPos - initialPos;
         Vector2 direction = Vector2.zero;
 
@@ -67,7 +65,6 @@ public class HeatMapScript : MonoBehaviour
         {
             //we have swiped if we got here
             direction.y = Mathf.Clamp(delta.y, -1, 1);
-            print("swipe y axis");
             switch_scene(direction);
             isRunning = false;
             return;
@@ -78,7 +75,6 @@ public class HeatMapScript : MonoBehaviour
     {
         if (direction.y < 0)
         {
-            print("pull down to swiping screen");
             SceneManager.LoadScene("SwipeScreenScene");
             return;
         }

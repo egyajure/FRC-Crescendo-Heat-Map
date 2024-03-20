@@ -22,14 +22,12 @@ public class CircleOnSwipe : MonoBehaviour
     public GameObject clone, otherclone;
     private bool isRunning = true;
 
-    public Grid grid;
+    public LoadGrid grid_manager;
 
     void Start()
     {
-        print("start");
         position.Enable();
         press.Enable();
-        grid = new Grid(54, 28, 0.5f, new Vector2(-14, -7));
     }
 
     void Update()
@@ -48,23 +46,20 @@ public class CircleOnSwipe : MonoBehaviour
 
     private void DetectSwipe()
     {
-        print("detect swipe");
         Vector2 delta = currentPos - initialPos;
         Vector2 direction = Vector2.zero;
 
         if (Mathf.Abs(delta.x) > swipeResistance)
         {
             //we have swiped if we got here
-            grid.SetValue(Camera.main.ScreenToWorldPoint(initialPos), 56);
+            grid_manager.updateGrid(initialPos);
             direction.x = Mathf.Clamp(delta.x, -1, 1);
             make_sprite(direction, initialPos);
-            print("swipe x axis");
         }
         if (Mathf.Abs(delta.y) > swipeResistance)
         {
             //we have swiped if we got here
             direction.y = Mathf.Clamp(delta.y, -1, 1);
-            print("swipe y axis");
             switch_scene(direction);
             isRunning = false;
             return;
@@ -98,13 +93,11 @@ public class CircleOnSwipe : MonoBehaviour
     {
         if (direction.y < 0)
         {
-            print("pull down to home screen");
             SceneManager.LoadScene("Home");
             return;
         }
         if (direction.y > 0)
         {
-            print("swipe up to heat map");
             SceneManager.LoadScene("HeatMapScene");
             return;
 

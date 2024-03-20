@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -56,22 +57,32 @@ public class Grid
 
     private void GetXY(Vector3 worldPosition, out int x, out int y)
     {
-        Debug.Log("X input position: " + worldPosition.x);
-        Debug.Log("Y input position: " + worldPosition.y);
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
-        Debug.Log("X result (hoping for an interger between 0 and 54): " + x);
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
-        Debug.Log("Y result (hoping for an interger between 0 and 28): " + y);
     }
     public void SetValue(Vector3 worldPosition, int value)
     {
-        Debug.Log("setting value");
         int x, y;
         GetXY(worldPosition, out x, out y);
         SetValue(x, y, value);
     }
 
-    //I'm going to want to have an increase value function as well
+    public void IncreaseValue(int x, int y)
+    {
+        if (x > 0 && y >= 0 && x < width && y < height)
+        {
+            gridArray[x, y] += 1;
+            debugTextArray[x, y].text = gridArray[x, y].ToString();
+            debugTextArray[x, y].color = Color.red;
+        }
+    }
+
+    public void IncreaseValue(Vector3 worldPosition)
+    {
+        int x, y;
+        GetXY(worldPosition, out x, out y);
+        IncreaseValue(x, y);
+    }
 
 
 
@@ -102,7 +113,7 @@ public class Grid
             {
                 if (gridArray[x, y] != 0)
                 {
-                    Debug.Log(gridArray[x, y].ToString());
+                    Debug.Log(gridArray[x, y].ToString() + "x: " + x + "y: " + y);
                 }
             }
         }
