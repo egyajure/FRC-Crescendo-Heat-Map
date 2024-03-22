@@ -14,8 +14,8 @@ public class Grid
     private int height;
     private float cellSize;
     private Vector3 originPosition;
-    private int[,] gridArray;
-    private TextMesh[,] debugTextArray;
+    public int[,] gridArray;
+    public TextMesh[,] debugTextArray;
 
     public Grid(int width, int height, float cellSize, Vector3 originPosition)
     {
@@ -107,6 +107,8 @@ public class Grid
 
     public void print()
     {
+        Debug.Log("width: " + gridArray.GetLength(0));
+        Debug.Log("height: " + gridArray.GetLength(1));
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
