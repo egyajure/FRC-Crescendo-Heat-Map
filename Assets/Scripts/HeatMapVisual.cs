@@ -10,7 +10,6 @@ public class HeatMapVisual : MonoBehaviour
 
     public void SetGrid(Grid grid)
     {
-        Debug.Log("I'm confused");
         this.grid = grid;
         UpdateHeatMapVisual();
     }
@@ -37,7 +36,6 @@ public class HeatMapVisual : MonoBehaviour
                 Vector3 quadSize = new Vector3(2, 2) * grid.GetCellSize();
                 int gridValue = grid.GetValue(x, y);
                 float gridValueNormalized = (float)gridValue / 10;
-                float test = 1;
                 Vector2 gridValueUV = new Vector2(gridValueNormalized, 0);
                 if (grid.gridArray[x, y] != 0)
                 {

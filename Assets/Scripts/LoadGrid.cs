@@ -21,14 +21,10 @@ public class LoadGrid : MonoBehaviour
         LoadGridData();
     }
 
-    void Update()
+    public void LoadHeatMap()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("grid test");
-            // grid.print();
-            heatMapVisual.SetGrid(grid);
-        }
+        Debug.Log("loading heat map");
+        heatMapVisual.SetGrid(grid);
     }
 
     void OnDestroy()
@@ -37,9 +33,17 @@ public class LoadGrid : MonoBehaviour
         SaveGridData();
     }
 
-    public void updateGrid(Vector2 position)
+    public void updateGrid(Vector2 position, bool hit)
     {
-        grid.IncreaseValue(Camera.main.ScreenToWorldPoint(position));
+        if (hit == true)
+        {
+            grid.IncreaseValue(Camera.main.ScreenToWorldPoint(position));
+        }
+        else
+        {
+            grid.DecreaseValue(Camera.main.ScreenToWorldPoint(position));
+        }
+
     }
 
     private void SaveGridData()

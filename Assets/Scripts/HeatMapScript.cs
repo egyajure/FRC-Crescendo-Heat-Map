@@ -12,6 +12,7 @@ public class HeatMapScript : MonoBehaviour
     [SerializeField] private float swipeResistance = 100;
     private Vector2 initialPos;
     private Vector2 currentPos => position.ReadValue<Vector2>();
+    public LoadGrid grid_manager;
 
     private bool isRunning = true;
     // Start is called before the first frame update
@@ -19,27 +20,28 @@ public class HeatMapScript : MonoBehaviour
     {
         position.Enable();
         press.Enable();
+        grid_manager.LoadHeatMap();
         var hits = GameObject.FindGameObjectsWithTag("Hits");
         var misses = GameObject.FindGameObjectsWithTag("Misses");
-        List<Vector3> hitPositions = new List<Vector3>();
-        List<Vector3> missPositions = new List<Vector3>();
-        foreach (var hit in hits)
-        {
-            Vector3 position;
-            Quaternion rotation;
-            hit.transform.GetPositionAndRotation(out position, out rotation);
-            hitPositions.Add(position);
-            hit.SetActive(false);
-        }
-        foreach (var miss in misses)
-        {
-            Vector3 position;
-            Quaternion rotation;
-            miss.transform.GetPositionAndRotation(out position, out rotation);
-            missPositions.Add(position);
-            miss.SetActive(false);
-        }
-        create_heat_map(hitPositions, missPositions);
+        // List<Vector3> hitPositions = new List<Vector3>();
+        // List<Vector3> missPositions = new List<Vector3>();
+        // foreach (var hit in hits)
+        // {
+        //     Vector3 position;
+        //     Quaternion rotation;
+        //     hit.transform.GetPositionAndRotation(out position, out rotation);
+        //     hitPositions.Add(position);
+        //     hit.SetActive(false);
+        // }
+        // foreach (var miss in misses)
+        // {
+        //     Vector3 position;
+        //     Quaternion rotation;
+        //     miss.transform.GetPositionAndRotation(out position, out rotation);
+        //     missPositions.Add(position);
+        //     miss.SetActive(false);
+        // }
+        // create_heat_map(hitPositions, missPositions);
     }
 
     // Update is called once per frame
@@ -80,8 +82,8 @@ public class HeatMapScript : MonoBehaviour
         }
     }
 
-    private void create_heat_map(List<Vector3> hits, List<Vector3> misses)
-    {
+    // private void create_heat_map(List<Vector3> hits, List<Vector3> misses)
+    // {
 
-    }
+    // }
 }

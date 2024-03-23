@@ -52,7 +52,15 @@ public class CircleOnSwipe : MonoBehaviour
         if (Mathf.Abs(delta.x) > swipeResistance)
         {
             //we have swiped if we got here
-            grid_manager.updateGrid(initialPos);
+            if (delta.x > 0)
+            {
+                grid_manager.updateGrid(initialPos, true);
+            }
+            else
+            {
+                grid_manager.updateGrid(initialPos, false);
+            }
+
             direction.x = Mathf.Clamp(delta.x, -1, 1);
             make_sprite(direction, initialPos);
         }
@@ -85,7 +93,7 @@ public class CircleOnSwipe : MonoBehaviour
         if (objToInstantiate != null)
         {
             GameObject obj = Instantiate(objToInstantiate, Camera.main.ScreenToWorldPoint(position) + Vector3.forward * 10, Quaternion.identity);
-            DontDestroyOnLoad(obj); // Ensure the instantiated object persists across scene changes
+            // DontDestroyOnLoad(obj); // Ensure the instantiated object persists across scene changes
         }
     }
 

@@ -16,7 +16,6 @@ public class Grid
     private float cellSize;
     private Vector3 originPosition;
     public int[,] gridArray;
-    public TextMesh[,] debugTextArray;
 
     public Grid(int width, int height, float cellSize, Vector3 originPosition)
     {
@@ -26,13 +25,11 @@ public class Grid
         this.originPosition = originPosition;
 
         gridArray = new int[width, height];
-        debugTextArray = new TextMesh[width, height];
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
-                debugTextArray[x, y] = DisplayText(gridArray[x, y].ToString(), TextAnchor.MiddleCenter, null, GetWorldPosition(x, y) + new Vector3(cellSize, cellSize) * .5f, 5);
                 Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x, y + 1), Color.white, 100f);
                 Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
             }
@@ -51,8 +48,6 @@ public class Grid
         if (x > 0 && y >= 0 && x < width && y < height)
         {
             gridArray[x, y] = value;
-            debugTextArray[x, y].text = gridArray[x, y].ToString();
-            debugTextArray[x, y].color = Color.red;
         }
     }
 
@@ -73,8 +68,6 @@ public class Grid
         if (x > 0 && y >= 0 && x < width && y < height)
         {
             gridArray[x, y] += 1;
-            debugTextArray[x, y].text = gridArray[x, y].ToString();
-            debugTextArray[x, y].color = Color.red;
         }
     }
 
@@ -83,7 +76,15 @@ public class Grid
         // int x, y;
         // GetXY(worldPosition, out x, out y);
         // IncreaseValue(x, y);
-        AddValue(worldPosition, 10, 1, 10);
+        AddValue(worldPosition, 10, 1, 3);
+    }
+
+    public void DecreaseValue(Vector3 worldPosition)
+    {
+        // int x, y;
+        // GetXY(worldPosition, out x, out y);
+        // IncreaseValue(x, y);
+        LowerValue(worldPosition, 10, 1, 3);
     }
 
 
@@ -167,6 +168,43 @@ public class Grid
                     if (x != 0)
                     {
                         AddValue(originX - x, originY - y, addValue);
+                    }
+                }
+
+            }
+        }
+    }
+
+
+    public void LowerValue(int x, int y, int value)
+    {
+        SetValue(x, y, GetValue(x, y) - value);
+    }
+    public void LowerValue(Vector3 worldPosition, int value, int fullValueRange, int totalRange)
+    {
+        int lowerValueAmount = Mathf.RoundToInt(value / (totalRange - fullValueRange));
+        GetXY(worldPosition, out int originX, out int originY);
+        for (int x = 0; x < totalRange; x++)
+        {
+            for (int y = 0; y < totalRange - x; y++)
+            {
+                int radius = x + y;
+                int lowerValue = value;
+                if (radius > fullValueRange)
+                {
+                    lowerValue -= lowerValueAmount * (radius - fullValueRange);
+                }
+                LowerValue(originX + x, originY + y, lowerValue);
+                if (x != 0)
+                {
+                    LowerValue(originX - x, originY + y, lowerValue);
+                }
+                if (y != 0)
+                {
+                    LowerValue(originX + x, originY - y, lowerValue);
+                    if (x != 0)
+                    {
+                        LowerValue(originX - x, originY - y, lowerValue);
                     }
                 }
 
