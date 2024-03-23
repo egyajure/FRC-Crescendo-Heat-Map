@@ -14,6 +14,7 @@ public class IntArrayWrapper
 public class LoadGrid : MonoBehaviour
 {
     public static Grid grid;
+    [SerializeField] private HeatMapVisual heatMapVisual;
 
     void Start()
     {
@@ -25,7 +26,8 @@ public class LoadGrid : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Debug.Log("grid test");
-            grid.print();
+            // grid.print();
+            heatMapVisual.SetGrid(grid);
         }
     }
 

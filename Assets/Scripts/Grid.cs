@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEditor;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
@@ -40,7 +41,7 @@ public class Grid
         Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
     }
 
-    private Vector3 GetWorldPosition(int x, int y)
+    public Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x, y) * cellSize + originPosition;
     }
@@ -79,9 +80,10 @@ public class Grid
 
     public void IncreaseValue(Vector3 worldPosition)
     {
-        int x, y;
-        GetXY(worldPosition, out x, out y);
-        IncreaseValue(x, y);
+        // int x, y;
+        // GetXY(worldPosition, out x, out y);
+        // IncreaseValue(x, y);
+        AddValue(worldPosition, 10, 1, 10);
     }
 
 
@@ -117,6 +119,57 @@ public class Grid
                 {
                     Debug.Log(gridArray[x, y].ToString() + "x: " + x + "y: " + y);
                 }
+            }
+        }
+    }
+
+    public int GetWidth()
+    {
+        return gridArray.GetLength(0);
+    }
+
+    public int GetHeight()
+    {
+        return gridArray.GetLength(1);
+    }
+
+    public float GetCellSize()
+    {
+        return cellSize;
+    }
+
+    public void AddValue(int x, int y, int value)
+    {
+        SetValue(x, y, GetValue(x, y) + value);
+    }
+    public void AddValue(Vector3 worldPosition, int value, int fullValueRange, int totalRange)
+    {
+        int lowerValueAmount = Mathf.RoundToInt(value / (totalRange - fullValueRange));
+        GetXY(worldPosition, out int originX, out int originY);
+        for (int x = 0; x < totalRange; x++)
+        {
+            for (int y = 0; y < totalRange - x; y++)
+            {
+                int radius = x + y;
+                int addValue = value;
+                if (radius > fullValueRange)
+                {
+                    addValue -= lowerValueAmount * (radius - fullValueRange);
+                }
+                AddValue(originX + x, originY + y, addValue);
+                if (x != 0)
+                {
+                    AddValue(originX - x, originY + y, addValue);
+                }
+                if (y != 0)
+                {
+                    AddValue(originX + x, originY - y, addValue);
+                    if (x != 0)
+                    {
+                        AddValue(originX - x, originY - y, addValue);
+                    }
+                }
+
             }
         }
     }
