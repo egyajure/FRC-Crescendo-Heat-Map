@@ -14,7 +14,8 @@ public class CircleOnSwipe : MonoBehaviour
     public event Swipe SwipePerformed;
 
     [SerializeField] private InputAction position, press;
-    [SerializeField] private float swipeResistance = 100;
+    [SerializeField] private float swipeResistanceX = 100;
+    [SerializeField] private float swipeResistanceY = 300;
 
 
     private Vector2 initialPos;
@@ -49,7 +50,7 @@ public class CircleOnSwipe : MonoBehaviour
         Vector2 delta = currentPos - initialPos;
         Vector2 direction = Vector2.zero;
 
-        if (Mathf.Abs(delta.x) > swipeResistance)
+        if (Mathf.Abs(delta.x) > swipeResistanceX)
         {
             //we have swiped if we got here
             if (delta.x > 0)
@@ -64,7 +65,7 @@ public class CircleOnSwipe : MonoBehaviour
             direction.x = Mathf.Clamp(delta.x, -1, 1);
             make_sprite(direction, initialPos);
         }
-        if (Mathf.Abs(delta.y) > swipeResistance)
+        if (Mathf.Abs(delta.y) > swipeResistanceY)
         {
             //we have swiped if we got here
             direction.y = Mathf.Clamp(delta.y, -1, 1);

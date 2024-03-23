@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -7,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class HomeScript : MonoBehaviour
 {
     [SerializeField] private InputAction position, press;
-    [SerializeField] private float swipeResistance = 100;
+    [SerializeField] private float swipeResistance = 300;
     private Vector2 initialPos;
     private Vector2 currentPos => position.ReadValue<Vector2>();
 
