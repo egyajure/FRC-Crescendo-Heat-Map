@@ -5,8 +5,7 @@ public class HomeOptions : MonoBehaviour
 {
     public void ResetGrid()
     {
-        //delete json file
-        Debug.Log("deleting grid data");
-        File.Delete(Application.dataPath + "/grid.json");
+        File.Delete(Application.dataPath + "/grid_hits.json");
+        File.Delete(Application.dataPath + "/grid_misses.json");
     }
 }

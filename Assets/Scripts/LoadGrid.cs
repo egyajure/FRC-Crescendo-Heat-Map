@@ -8,59 +8,71 @@ public class IntArrayWrapper
 
 public class LoadGrid : MonoBehaviour
 {
-    public static Grid grid;
+    public static Grid hits_grid;
+    public static Grid misses_grid;
     [SerializeField] private HeatMapVisual heatMapVisual;
 
     void Start()
     {
-        LoadGridData();
+        hits_grid = new Grid(54, 28, 0.5f, new Vector2(-14, -7));
+        misses_grid = new Grid(54, 28, 0.5f, new Vector2(-14, -7));
+        LoadGridData(hits_grid, true);
+        LoadGridData(misses_grid, false);
     }
 
     public void LoadHeatMap()
     {
-        Debug.Log("loading heat map");
-        heatMapVisual.SetGrid(grid);
+        heatMapVisual.SetGrid(hits_grid, misses_grid);
     }
 
     void OnDestroy()
     {
-        Debug.Log("destroying");
-        SaveGridData();
+        SaveGridData(hits_grid, true);
+        SaveGridData(misses_grid, false);
     }
 
     public void updateGrid(Vector2 position, bool hit)
     {
         if (hit == true)
         {
-            grid.IncreaseValue(Camera.main.ScreenToWorldPoint(position));
+            hits_grid.IncreaseValue(Camera.main.ScreenToWorldPoint(position));
         }
         else
         {
-            grid.DecreaseValue(Camera.main.ScreenToWorldPoint(position));
+            misses_grid.IncreaseValue(Camera.main.ScreenToWorldPoint(position));
         }
 
     }
 
-    private void SaveGridData()
+    private void SaveGridData(Grid grid, bool hit)
     {
-        Debug.Log("saving to file");
         int[] temp_grid = two_to_one_dimension_array(grid.gridArray);
-        WriteArrayToJsonFile(temp_grid, Application.dataPath + "/grid.json");
-    }
-    private void LoadGridData()
-    {
-        if (File.Exists(Application.dataPath + "/grid.json"))
+        if (hit == true)
         {
-            Debug.Log("loading from file");
-            int[] temp_grid = ReadArrayFromJsonFile(Application.dataPath + "/grid.json");
-            grid = new Grid(54, 28, 0.5f, new Vector2(-14, -7));
-            grid.gridArray = one_to_two_dimension_array(temp_grid, 54, 28);
-            Debug.Log("grid loaded");
+            WriteArrayToJsonFile(temp_grid, Application.dataPath + "/grid_hits.json");
         }
         else
         {
-            Debug.Log("Loading Grid");
-            grid = new Grid(54, 28, 0.5f, new Vector2(-14, -7));
+            WriteArrayToJsonFile(temp_grid, Application.dataPath + "/grid_misses.json");
+        }
+
+    }
+    private void LoadGridData(Grid grid, bool hit)
+    {
+        string filePath;
+        if (hit == true)
+        {
+            filePath = Application.dataPath + "/grid_hits.json";
+        }
+        else
+        {
+            filePath = Application.dataPath + "/grid_misses.json";
+        }
+
+        if (File.Exists(filePath))
+        {
+            int[] temp_grid = ReadArrayFromJsonFile(filePath);
+            grid.gridArray = one_to_two_dimension_array(temp_grid, 54, 28);
         }
     }
 
@@ -143,6 +155,6 @@ public class LoadGrid : MonoBehaviour
 
         string json = JsonUtility.ToJson(wrapper);
         File.WriteAllText(filePath, json);
-        Debug.Log("Array written to JSON file: " + filePath);
+        // Debug.Log("Array written to JSON file: " + filePath);
     }
 }

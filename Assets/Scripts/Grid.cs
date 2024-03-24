@@ -76,7 +76,7 @@ public class Grid
         // int x, y;
         // GetXY(worldPosition, out x, out y);
         // IncreaseValue(x, y);
-        AddValue(worldPosition, 10, 1, 3);
+        AddValue(worldPosition, 10, 2, 3);
     }
 
     public void DecreaseValue(Vector3 worldPosition)

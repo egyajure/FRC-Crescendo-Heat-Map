@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class HeatMapVisual : MonoBehaviour
 {
-    private Grid grid;
+    private Grid hits_grid;
+    private Grid misses_grid;
     private Mesh mesh;
 
-    public void SetGrid(Grid grid)
+    public void SetGrid(Grid hits_grid, Grid misses_grid)
     {
-        this.grid = grid;
+        this.hits_grid = hits_grid;
+        this.misses_grid = misses_grid;
         UpdateHeatMapVisual();
     }
 
@@ -22,24 +24,27 @@ public class HeatMapVisual : MonoBehaviour
 
     private void UpdateHeatMapVisual()
     {
-        Debug.Log("Update mesh test");
-        CreateEmptyMeshData(grid.GetWidth() * grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
-        Debug.Log("uv " + uv.Length);
-        Debug.Log("vertices " + vertices.Length);
-        Debug.Log("traingles " + triangles.Length);
+        CreateEmptyMeshData(hits_grid.GetWidth() * hits_grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
 
-        for (int x = 0; x < grid.GetWidth(); x++)
+        for (int x = 0; x < hits_grid.GetWidth(); x++)
         {
-            for (int y = 0; y < grid.GetHeight(); y++)
+            for (int y = 0; y < hits_grid.GetHeight(); y++)
             {
-                int index = x * grid.GetHeight() + y;
-                Vector3 quadSize = new Vector3(2, 2) * grid.GetCellSize();
-                int gridValue = grid.GetValue(x, y);
-                float gridValueNormalized = (float)gridValue / 10;
-                Vector2 gridValueUV = new Vector2(gridValueNormalized, 0);
-                if (grid.gridArray[x, y] != 0)
+                int index = x * hits_grid.GetHeight() + y;
+                Vector3 quadSize = new Vector3(2, 2) * hits_grid.GetCellSize();
+                int hitsValue = hits_grid.gridArray[x, y];
+                int missesValue = misses_grid.gridArray[x, y];
+                if (hits_grid.gridArray[x, y] != 0 || misses_grid.gridArray[x, y] != 0)
                 {
-                    AddQuad(vertices, uv, triangles, index, grid.GetWorldPosition(x, y) + quadSize * 0.5f, quadSize, gridValueUV);
+                    float avgHits = (float)hitsValue / (hitsValue + missesValue);
+                    // float gridValueNormalized = (float)avgHits * 100;
+                    //if a spot hits every spot, avgHits will = 1,
+                    Vector2 gridValueUV = new Vector2(avgHits, 0f);
+                    // Debug.Log("hits value = " + hitsValue);
+                    // Debug.Log("misses value = " + missesValue);
+                    // Debug.Log("Avg value = " + avgHits);
+                    // Debug.Log("Uv value = " + gridValueUV);
+                    AddQuad(vertices, uv, triangles, index, hits_grid.GetWorldPosition(x, y) + quadSize * 0.5f, quadSize, gridValueUV);
                 }
             }
         }

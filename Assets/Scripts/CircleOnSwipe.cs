@@ -55,10 +55,12 @@ public class CircleOnSwipe : MonoBehaviour
             //we have swiped if we got here
             if (delta.x > 0)
             {
+                Debug.Log("updating hits");
                 grid_manager.updateGrid(initialPos, true);
             }
             else
             {
+                Debug.Log("updating misses");
                 grid_manager.updateGrid(initialPos, false);
             }
 
