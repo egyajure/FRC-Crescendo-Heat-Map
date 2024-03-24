@@ -6,6 +6,8 @@ public class IntArrayWrapper
     public int[] array;
 }
 
+
+
 public class LoadGrid : MonoBehaviour
 {
     public static Grid hits_grid;

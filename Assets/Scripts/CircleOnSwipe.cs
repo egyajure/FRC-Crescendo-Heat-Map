@@ -50,7 +50,15 @@ public class CircleOnSwipe : MonoBehaviour
         Vector2 delta = currentPos - initialPos;
         Vector2 direction = Vector2.zero;
 
-        if (Mathf.Abs(delta.x) > swipeResistanceX)
+        if (Mathf.Abs(delta.y) > swipeResistanceY)
+        {
+            //we have swiped if we got here
+            direction.y = Mathf.Clamp(delta.y, -1, 1);
+            switch_scene(direction);
+            isRunning = false;
+            return;
+        }
+        else if (Mathf.Abs(delta.x) > swipeResistanceX)
         {
             //we have swiped if we got here
             if (delta.x > 0)
@@ -66,14 +74,6 @@ public class CircleOnSwipe : MonoBehaviour
 
             direction.x = Mathf.Clamp(delta.x, -1, 1);
             make_sprite(direction, initialPos);
-        }
-        if (Mathf.Abs(delta.y) > swipeResistanceY)
-        {
-            //we have swiped if we got here
-            direction.y = Mathf.Clamp(delta.y, -1, 1);
-            switch_scene(direction);
-            isRunning = false;
-            return;
         }
         if (direction != Vector2.zero & SwipePerformed != null)
         {

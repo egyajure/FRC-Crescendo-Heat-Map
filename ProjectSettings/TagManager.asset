@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Hits
   - Misses
+  - load error msg
+  - save error msg
   layers:
   - Default
   - TransparentFX
