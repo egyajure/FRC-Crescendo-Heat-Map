@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using TMPro;
 using System.IO;
+using System.Linq;
 
 
 public class LoadMap : MonoBehaviour
@@ -14,9 +15,11 @@ public class LoadMap : MonoBehaviour
 
     public TMP_InputField saveStringField;
     public TMP_Dropdown loadStringField;
-    public GameObject error;
+    public GameObject error, wrong_char_error;
     public GameObject homescreen;
     public GameObject savescreen;
+
+    public List<char> invalidChars;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +29,25 @@ public class LoadMap : MonoBehaviour
         error = GameObject.FindGameObjectWithTag("save error msg");
         loadStringField.AddOptions(FileNames);
         error.SetActive(false);
+        wrong_char_error.SetActive(false);
+
+
+        invalidChars = new List<char>();
+
+        // Control characters (U+0000 through U+001F)
+        for (int charCode = 0x00; charCode < 0x20; charCode++)
+        {
+            invalidChars.Add((char)charCode);
+        }
+
+        // Control characters (U+007F through U+009F)
+        for (int charCode = 0x7F; charCode < 0xA0; charCode++)
+        {
+            invalidChars.Add((char)charCode);
+        }
+
+        // Additional invalid characters: quote, backslash
+        invalidChars.AddRange(new char[] { '"', '\\' });
     }
 
     public void Copy()
@@ -41,13 +63,25 @@ public class LoadMap : MonoBehaviour
         {
             return;
         }
+        bool errors = false;
+        foreach (char invalidChar in invalidChars)
+        {
+            if (saveString.Contains(invalidChar))
+            {
+                Debug.Log("bad character found");
+                error.SetActive(false);
+                wrong_char_error.SetActive(true);
+                errors = true;
+            }
+        }
         if (fileExists(saveString))
         {
             //print this name has already been used
+            wrong_char_error.SetActive(false);
             error.SetActive(true);
             Debug.Log("enter a different name");
         }
-        else
+        else if (!errors)
         {
             Debug.Log("grid saved");
             FileNames.Add(saveString);

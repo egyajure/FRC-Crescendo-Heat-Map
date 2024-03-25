@@ -76,7 +76,7 @@ public class Grid
         // int x, y;
         // GetXY(worldPosition, out x, out y);
         // IncreaseValue(x, y);
-        AddValue(worldPosition, 10, 2, 3);
+        AddValue(worldPosition);
     }
 
     public void DecreaseValue(Vector3 worldPosition)
@@ -173,6 +173,16 @@ public class Grid
 
             }
         }
+    }
+
+    public void AddValue(Vector3 worldPosition)
+    {
+        GetXY(worldPosition, out int originX, out int originY);
+        AddValue(originX, originY, 1);
+        AddValue(originX + 1, originY, 1);
+        AddValue(originX - 1, originY, 1);
+        AddValue(originX, originY + 1, 1);
+        AddValue(originX, originY - 1, 1);
     }
 
 
