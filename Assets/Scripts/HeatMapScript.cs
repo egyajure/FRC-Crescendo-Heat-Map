@@ -9,10 +9,17 @@ public class HeatMapScript : MonoBehaviour
 {
 
     [SerializeField] private InputAction position, press;
-    [SerializeField] private float swipeResistance = 300;
+    [SerializeField] private float swipeResistanceX = 100;
+    [SerializeField] private float swipeResistanceY = 200;
     private Vector2 initialPos;
     private Vector2 currentPos => position.ReadValue<Vector2>();
     public LoadGrid grid_manager;
+
+    public GameObject percentage_txt;
+    public GameObject hits_txt;
+    public GameObject misses_txt;
+
+    private string currMap = "byPercentage";
 
     private bool isRunning = true;
     // Start is called before the first frame update
@@ -20,7 +27,10 @@ public class HeatMapScript : MonoBehaviour
     {
         position.Enable();
         press.Enable();
-        grid_manager.LoadHeatMap();
+        hits_txt.SetActive(false);
+        misses_txt.SetActive(false);
+        percentage_txt.SetActive(true);
+        grid_manager.LoadHeatMap("byPercentage");
         var hits = GameObject.FindGameObjectsWithTag("Hits");
         var misses = GameObject.FindGameObjectsWithTag("Misses");
         // List<Vector3> hitPositions = new List<Vector3>();
@@ -63,13 +73,18 @@ public class HeatMapScript : MonoBehaviour
         Vector2 delta = currentPos - initialPos;
         Vector2 direction = Vector2.zero;
 
-        if (Mathf.Abs(delta.y) > swipeResistance)
+        if (Mathf.Abs(delta.y) > swipeResistanceY)
         {
             //we have swiped if we got here
             direction.y = Mathf.Clamp(delta.y, -1, 1);
             switch_scene(direction);
             isRunning = false;
             return;
+        }
+        else if (Mathf.Abs(delta.x) > swipeResistanceX)
+        {
+            direction.x = Mathf.Clamp(delta.x, -1, 1);
+            switch_map(direction);
         }
     }
 
@@ -82,8 +97,49 @@ public class HeatMapScript : MonoBehaviour
         }
     }
 
-    // private void create_heat_map(List<Vector3> hits, List<Vector3> misses)
-    // {
+    private void switch_map(Vector2 direction)
+    {
+        if (currMap == "byPercentage")
+        {
+            if (direction.x < 0)
+            {
+                hits_txt.SetActive(true);
+                percentage_txt.SetActive(false);
+                grid_manager.LoadHeatMap("byHits");
+                currMap = "byHits";
+                return;
+            }
+        }
+        else if (currMap == "byHits")
+        {
 
-    // }
+            if (direction.x < 0)
+            {
+                misses_txt.SetActive(true);
+                hits_txt.SetActive(false);
+                grid_manager.LoadHeatMap("byMisses");
+                currMap = "byMisses";
+                return;
+            }
+            else
+            {
+                percentage_txt.SetActive(true);
+                hits_txt.SetActive(false);
+                grid_manager.LoadHeatMap("byPercentage");
+                currMap = "byPercentage";
+                return;
+            }
+        }
+        else if (currMap == "byMisses")
+        {
+            if (direction.x > 0)
+            {
+                hits_txt.SetActive(true);
+                misses_txt.SetActive(false);
+                grid_manager.LoadHeatMap("byHits");
+                currMap = "byHits";
+                return;
+            }
+        }
+    }
 }

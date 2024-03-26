@@ -17,4 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HeatMapScene.unity
     guid: efc206742fc65e8a39c5be6178f959ce
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: f5c553ef9e7d7c69eb664f8bb9b936cf, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: d2ca974dcde6343e3aa64ec34fe1d6f2, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: fa16be468c552c6c58593f0ce1fda2a8, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 5019ecfb83d8ffcb3ba745c266b639e8, type: 2}

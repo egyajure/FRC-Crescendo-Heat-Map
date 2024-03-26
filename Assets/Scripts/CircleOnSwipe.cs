@@ -15,7 +15,7 @@ public class CircleOnSwipe : MonoBehaviour
 
     [SerializeField] private InputAction position, press;
     [SerializeField] private float swipeResistanceX = 100;
-    [SerializeField] private float swipeResistanceY = 300;
+    [SerializeField] private float swipeResistanceY = 200;
 
 
     private Vector2 initialPos;

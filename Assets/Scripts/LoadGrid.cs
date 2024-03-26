@@ -22,9 +22,9 @@ public class LoadGrid : MonoBehaviour
         LoadGridData(misses_grid, false);
     }
 
-    public void LoadHeatMap()
+    public void LoadHeatMap(string type)
     {
-        heatMapVisual.SetGrid(hits_grid, misses_grid);
+        heatMapVisual.SetGrid(hits_grid, misses_grid, type);
     }
 
     void OnDestroy()

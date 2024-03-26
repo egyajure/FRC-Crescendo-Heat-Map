@@ -9,11 +9,22 @@ public class HeatMapVisual : MonoBehaviour
     private Grid misses_grid;
     private Mesh mesh;
 
-    public void SetGrid(Grid hits_grid, Grid misses_grid)
+    public void SetGrid(Grid hits_grid, Grid misses_grid, string type)
     {
         this.hits_grid = hits_grid;
         this.misses_grid = misses_grid;
-        UpdateHeatMapVisual();
+        if (type == "byPercentage")
+        {
+            UpdateHeatMapVisual();
+        }
+        else if (type == "byHits")
+        {
+            UpdateHeatMapVisual_Hits();
+        }
+        else if (type == "byMisses")
+        {
+            UpdateHeatMapVisual_Misses();
+        }
     }
 
     private void Awake()
@@ -39,6 +50,71 @@ public class HeatMapVisual : MonoBehaviour
                     float avgHits = (float)hitsValue / (hitsValue + missesValue);
                     // float gridValueNormalized = (float)avgHits * 100;
                     //if a spot hits every spot, avgHits will = 1,
+                    Vector2 gridValueUV = new Vector2(avgHits, 0f);
+                    // Debug.Log("hits value = " + hitsValue);
+                    // Debug.Log("misses value = " + missesValue);
+                    // Debug.Log("Avg value = " + avgHits);
+                    // Debug.Log("Uv value = " + gridValueUV);
+                    AddQuad(vertices, uv, triangles, index, hits_grid.GetWorldPosition(x, y) + quadSize * 0.5f, quadSize, gridValueUV);
+                }
+            }
+        }
+
+        mesh.vertices = vertices;
+        mesh.uv = uv;
+        mesh.triangles = triangles;
+
+    }
+
+    private void UpdateHeatMapVisual_Hits()
+    {
+        CreateEmptyMeshData(hits_grid.GetWidth() * hits_grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
+
+        for (int x = 0; x < hits_grid.GetWidth(); x++)
+        {
+            for (int y = 0; y < hits_grid.GetHeight(); y++)
+            {
+                int index = x * hits_grid.GetHeight() + y;
+                Vector3 quadSize = new Vector3(2, 2) * hits_grid.GetCellSize();
+                int hitsValue = hits_grid.gridArray[x, y];
+                if (hits_grid.gridArray[x, y] != 0)
+                {
+                    float avgHits = (float)(hitsValue - 1) / 4;
+                    // float gridValueNormalized = (float)avgHits * 100;
+                    //if a spot gets 5 hits, the number will be 5 and it will be green
+                    Vector2 gridValueUV = new Vector2(avgHits, 0f);
+                    // Debug.Log("hits value = " + hitsValue);
+                    // Debug.Log("misses value = " + missesValue);
+                    // Debug.Log("Avg value = " + avgHits);
+                    // Debug.Log("Uv value = " + gridValueUV);
+                    AddQuad(vertices, uv, triangles, index, hits_grid.GetWorldPosition(x, y) + quadSize * 0.5f, quadSize, gridValueUV);
+                }
+            }
+        }
+
+        mesh.vertices = vertices;
+        mesh.uv = uv;
+        mesh.triangles = triangles;
+
+    }
+
+
+    private void UpdateHeatMapVisual_Misses()
+    {
+        CreateEmptyMeshData(hits_grid.GetWidth() * hits_grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
+
+        for (int x = 0; x < hits_grid.GetWidth(); x++)
+        {
+            for (int y = 0; y < hits_grid.GetHeight(); y++)
+            {
+                int index = x * hits_grid.GetHeight() + y;
+                Vector3 quadSize = new Vector3(2, 2) * hits_grid.GetCellSize();
+                int missesValue = misses_grid.gridArray[x, y];
+                if (misses_grid.gridArray[x, y] != 0)
+                {
+                    float avgHits = (float)(missesValue - 1) / 4;
+                    // float gridValueNormalized = (float)avgHits * 100;
+                    //if a spot gets 5 misses, the number will be 5 and it will be green
                     Vector2 gridValueUV = new Vector2(avgHits, 0f);
                     // Debug.Log("hits value = " + hitsValue);
                     // Debug.Log("misses value = " + missesValue);

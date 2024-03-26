@@ -26,7 +26,6 @@ public class LoadMap : MonoBehaviour
     {
         saveString = "";
         FileNames = getFileNames();
-        error = GameObject.FindGameObjectWithTag("save error msg");
         loadStringField.AddOptions(FileNames);
         error.SetActive(false);
         wrong_char_error.SetActive(false);
@@ -85,8 +84,8 @@ public class LoadMap : MonoBehaviour
         {
             Debug.Log("grid saved");
             FileNames.Add(saveString);
-            FileUtil.CopyFileOrDirectory(Application.dataPath + "/grid_hits.json", Application.dataPath + "/savedGrids/" + saveString + "_hits.json");
-            FileUtil.CopyFileOrDirectory(Application.dataPath + "/grid_misses.json", Application.dataPath + "/savedGrids/" + saveString + "_misses.json");
+            File.Copy(Application.dataPath + "/grid_hits.json", Application.dataPath + "/savedGrids/" + saveString + "_hits.json");
+            File.Copy(Application.dataPath + "/grid_misses.json", Application.dataPath + "/savedGrids/" + saveString + "_misses.json");
 
             // switch back to homescreen
             savescreen.SetActive(false);
@@ -106,11 +105,11 @@ public class LoadMap : MonoBehaviour
         else
         {
             // deleting original files
-            FileUtil.DeleteFileOrDirectory(Application.dataPath + "/grid_hits.json");
-            FileUtil.DeleteFileOrDirectory(Application.dataPath + "/grid_misses.json");
+            File.Delete(Application.dataPath + "/grid_hits.json");
+            File.Delete(Application.dataPath + "/grid_misses.json");
             // replacing grid files
-            FileUtil.CopyFileOrDirectory(Application.dataPath + "/savedGrids/" + name + "_hits.json", Application.dataPath + "/grid_hits.json");
-            FileUtil.CopyFileOrDirectory(Application.dataPath + "/savedGrids/" + name + "_misses.json", Application.dataPath + "/grid_misses.json");
+            File.Copy(Application.dataPath + "/savedGrids/" + name + "_hits.json", Application.dataPath + "/grid_hits.json");
+            File.Copy(Application.dataPath + "/savedGrids/" + name + "_misses.json", Application.dataPath + "/grid_misses.json");
         }
     }
 

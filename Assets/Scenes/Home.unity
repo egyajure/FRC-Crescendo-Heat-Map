@@ -674,7 +674,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -206.4447, y: 0, z: -98.16043, w: 0}
+  m_margin: {x: 6.021118, y: 0, z: 117.24495, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -919,7 +919,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -235.30133, y: 0, z: -131.07297, w: 0}
+  m_margin: {x: -1.2071692, y: 0, z: 109.8159, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3028,10 +3028,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   saveStringField: {fileID: 1081575879}
   loadStringField: {fileID: 2040910507}
-  error: {fileID: 0}
-  wrong_char_error: {fileID: 0}
-  homescreen: {fileID: 0}
-  savescreen: {fileID: 0}
+  error: {fileID: 867240191}
+  wrong_char_error: {fileID: 1986736374}
+  homescreen: {fileID: 874563092}
+  savescreen: {fileID: 1875058672}
   invalidChars: 
 --- !u!1 &910733790
 GameObject:
@@ -3498,7 +3498,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -235.30133, y: 0, z: -131.07297, w: 0}
+  m_margin: {x: 1.7129517, y: 0, z: 107.9128, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5678,7 +5678,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -235.30133, y: 0, z: -131.07297, w: 0}
+  m_margin: {x: 2.9553833, y: 0, z: 108.49065, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6311,8 +6311,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 148, y: 268}
-  m_SizeDelta: {x: 1116.1279, y: 714.1782}
+  m_AnchoredPosition: {x: 133, y: 268}
+  m_SizeDelta: {x: 1216.0239, y: 714.1782}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2012819966
 MonoBehaviour:
@@ -6334,9 +6334,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Swipe up and down to navigate between pages:\n - Home Screen\n- Swipe
-    Screen\n- Results Screen\n\n\nOn the Swipe Screen:\n- Swipe right  to record
-    a hit\n- Swipe left to record a miss\n"
+  m_text: "Swipe up and down to navigate between pages:\n - Swipe up once to get
+    to the Swipe Screen\n- Swipe up again to see the results\n\n\nOn the Swipe Screen:\n-
+    Swipe right  to record a hit\n- Swipe left to record a miss\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
