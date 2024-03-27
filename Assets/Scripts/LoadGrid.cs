@@ -51,11 +51,11 @@ public class LoadGrid : MonoBehaviour
         int[] temp_grid = two_to_one_dimension_array(grid.gridArray);
         if (hit == true)
         {
-            WriteArrayToJsonFile(temp_grid, Application.dataPath + "/grid_hits.json");
+            WriteArrayToJsonFile(temp_grid, Path.Combine(Application.persistentDataPath, "grid_hits.json"));
         }
         else
         {
-            WriteArrayToJsonFile(temp_grid, Application.dataPath + "/grid_misses.json");
+            WriteArrayToJsonFile(temp_grid, Path.Combine(Application.persistentDataPath, "grid_misses.json"));
         }
 
     }
@@ -64,11 +64,11 @@ public class LoadGrid : MonoBehaviour
         string filePath;
         if (hit == true)
         {
-            filePath = Application.dataPath + "/grid_hits.json";
+            filePath = Path.Combine(Application.persistentDataPath, "grid_hits.json");
         }
         else
         {
-            filePath = Application.dataPath + "/grid_misses.json";
+            filePath = Path.Combine(Application.persistentDataPath, "grid_misses.json");
         }
 
         if (File.Exists(filePath))

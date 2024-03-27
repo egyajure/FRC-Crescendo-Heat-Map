@@ -6,6 +6,7 @@ using UnityEngine;
 using TMPro;
 using System.IO;
 using System.Linq;
+using UnityEngine.Android;
 
 
 public class LoadMap : MonoBehaviour
@@ -24,6 +25,10 @@ public class LoadMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!Permission.HasUserAuthorizedPermission(Permission.ExternalStorageWrite))
+        {
+            Permission.RequestUserPermission(Permission.ExternalStorageWrite);
+        }
         saveString = "";
         FileNames = getFileNames();
         loadStringField.AddOptions(FileNames);
@@ -84,8 +89,11 @@ public class LoadMap : MonoBehaviour
         {
             Debug.Log("grid saved");
             FileNames.Add(saveString);
-            File.Copy(Application.dataPath + "/grid_hits.json", Application.dataPath + "/savedGrids/" + saveString + "_hits.json");
-            File.Copy(Application.dataPath + "/grid_misses.json", Application.dataPath + "/savedGrids/" + saveString + "_misses.json");
+            Debug.Log("path: " + Path.Combine(Application.persistentDataPath, "grid_hits.json"));
+            Debug.Log("destination path: " + Path.Combine(Application.persistentDataPath, saveString + "_hits.json"));
+
+            File.Copy(Path.Combine(Application.persistentDataPath, "grid_hits.json"), Path.Combine(Application.persistentDataPath, saveString + "_hits.json"));
+            File.Copy(Path.Combine(Application.persistentDataPath, "grid_misses.json"), Path.Combine(Application.persistentDataPath, saveString + "_misses.json"));
 
             // switch back to homescreen
             savescreen.SetActive(false);
@@ -105,17 +113,36 @@ public class LoadMap : MonoBehaviour
         else
         {
             // deleting original files
-            File.Delete(Application.dataPath + "/grid_hits.json");
-            File.Delete(Application.dataPath + "/grid_misses.json");
+            File.Delete(Path.Combine(Application.persistentDataPath, "grid_hits.json"));
+            File.Delete(Path.Combine(Application.persistentDataPath, "grid_misses.json"));
             // replacing grid files
-            File.Copy(Application.dataPath + "/savedGrids/" + name + "_hits.json", Application.dataPath + "/grid_hits.json");
-            File.Copy(Application.dataPath + "/savedGrids/" + name + "_misses.json", Application.dataPath + "/grid_misses.json");
+            File.Copy(Path.Combine(Application.persistentDataPath, name + "_hits.json"), Path.Combine(Application.persistentDataPath, "grid_hits.json"));
+            File.Copy(Path.Combine(Application.persistentDataPath, name + "_misses.json"), Path.Combine(Application.persistentDataPath, "grid_misses.json"));
         }
     }
 
+    public void DeleteGrid()
+    {
+        int dropdownIndex = loadStringField.value;
+        string name = loadStringField.options[dropdownIndex].text;
+        Debug.Log("test name is " + name);
+        if (!fileExists(name))
+        {
+            Debug.Log("the file you are looking for does not exist");
+        }
+        else
+        {
+            // deleting files
+            File.Delete(Path.Combine(Application.persistentDataPath, name + "_hits.json"));
+            File.Delete(Path.Combine(Application.persistentDataPath, name + "_misses.json"));
+        }
+    }
+
+
+
     private bool fileExists(string name)
     {
-        if (File.Exists(Application.dataPath + "/savedGrids/" + name + "_hits.json"))
+        if (File.Exists(Path.Combine(Application.persistentDataPath, name + "_hits.json")))
         {
             return true;
         }
@@ -125,7 +152,7 @@ public class LoadMap : MonoBehaviour
     private List<string> getFileNames()
     {
         List<string> names = new List<string>();
-        string filepath = Application.dataPath + "/savedGrids";
+        string filepath = Application.persistentDataPath;
         if (Directory.Exists(filepath))
         {
             // Get all files in the directory
@@ -134,14 +161,14 @@ public class LoadMap : MonoBehaviour
             // Loop through each file
             foreach (string file in files)
             {
-                if (file.EndsWith("meta") || file.EndsWith("misses.json"))
+                Debug.Log(file);
+                if (file.EndsWith("hits.json"))
                 {
-                    continue;
+                    string[] pathComponents = file.Split('/');
+                    string extractedSubstring = pathComponents[pathComponents.Length - 1];
+                    string name = extractedSubstring.Substring(0, extractedSubstring.Length - 10);
+                    names.Add(name);
                 }
-                string[] pathComponents = file.Split('/');
-                string extractedSubstring = pathComponents[pathComponents.Length - 1];
-                string name = extractedSubstring.Substring(0, extractedSubstring.Length - 10);
-                names.Add(name);
             }
         }
         return names;
