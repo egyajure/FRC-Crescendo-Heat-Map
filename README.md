@@ -9,6 +9,8 @@ Functionality:
 # Demo
 ![shot_demo](https://github.com/egyajure/FRC-Crescendo-Shot-Tracker/assets/71519668/91de9cb9-6973-4247-82c9-a22af3dcfbbd)
 
+https://github.com/egyajure/FRC-Crescendo-Shot-Tracker/assets/71519668/a9e5bdfc-7748-4331-839b-8280c0730228
+
 # Potential improvements
 - Add in functionality to undo a shot if you misswipe
 - Represent shots in more of a heat-map manner
